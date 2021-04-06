@@ -4,19 +4,21 @@ const bot = require('./checkapoint-bot');
 
 const Builder = Webdriver.Builder;
 const By = Webdriver.By;
-
+const log = console.log;
+const url = "https://evisaforms.state.gov/acs/default.asp?postcode=JRS&appcode=1";
 const argsTypes = {
    alwaysNotify: "--n"
 }
 
-const url = "https://evisaforms.state.gov/acs/default.asp?postcode=JRS&appcode=1";
 const alwaysNotify = process.argv.some(arg => arg === argsTypes.alwaysNotify);
 
 if(alwaysNotify){
-   console.log("notify user after every scan - enabled");
+   log("notify user after every scan - enabled");
 }
 
 const checkForAppointments = async () => {
+   log('checking for available appointments...');
+   
    try{
       const driver = new Builder().forBrowser('firefox').setFirefoxOptions(new FireFox.Options().headless()).build();
       const results = []
@@ -43,7 +45,7 @@ const checkForAppointments = async () => {
          
          const message = `${month} ${open.length} available appointments ${booked.length} booked appointments`;
 
-         console.log(message);
+         log(message);
          results.push(message)
          openDays += open.length;
          
@@ -54,7 +56,7 @@ const checkForAppointments = async () => {
                const date = await openDate.getText();
                const currURl = await driver.getCurrentUrl();
                const msg = `open appointment found on ${month} ${date}`;
-               console.log(msg);
+               log(msg);
                bot.sendMessage(`${msg} \nlink: ${currURl}`)
             }))
          }
@@ -77,7 +79,7 @@ const checkForAppointments = async () => {
 
       if(openDays > 0){
          // notify
-         console.log('open day found')
+         log('open day found')
          const currUrl = await driver.getCurrentUrl();
          bot.sendMessage("open appointment found\n" + currUrl)
       }

@@ -1,5 +1,5 @@
 # Check-Apoint
-## bot to check for appointments
+## A simple bot to check for appointments in the us embassy
 
 __Dependancies__:
 - git
@@ -12,9 +12,10 @@ __Clone project__:
 ```
 
 __Install Selenuim driver__:
+
 simpley run provided bash script 
 ```
-> sudo get-selenuim-driver.sh
+> sudo install-selenuim-driver.sh
 ```
 
 __Install and run__:
