@@ -1,0 +1,20 @@
+{
+  "name": "selenuim-poc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node checkApoint.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-telegram-bot-api": "^0.51.0",
+    "phantomjs": "^2.1.7",
+    "selenium-webdriver": "^4.0.0-beta.1",
+    "selenium-webdriver-selector": "^1.0.3"
+  }
+}
