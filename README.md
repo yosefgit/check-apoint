@@ -1,18 +1,24 @@
 # Check-Apoint
 ## bot to check for appointments
 
-_Dependancies_:
+__Dependancies__:
 - git
 - npm
 - node
 
-_Clone project_:
+__Clone project__:
 ```
-git clone https://github.com/yosefgit/check-apoint.git
+> git clone https://github.com/yosefgit/check-apoint.git
 ```
 
-_Install and run_:
+__Install Selenuim driver__:
+simpley run provided bash script 
 ```
-npm install
-npm start
+> sudo get-selenuim-driver.sh
+```
+
+__Install and run__:
+```
+> npm install
+> npm start
 ```
