@@ -1,10 +1,10 @@
-# check-apoint
-bot to check for appointments
+# Check-Apoint
+## bot to check for appointments
 
 dependancies:
-git
-npm
-node
+-git
+-npm
+-node
 
 clone project:
 ```
