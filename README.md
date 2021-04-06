@@ -1,17 +1,17 @@
 # Check-Apoint
 ## bot to check for appointments
 
-dependancies:
--git
--npm
--node
+Dependancies:
+- git
+- npm
+- node
 
-clone project:
+Clone project:
 ```
 git clone https://github.com/yosefgit/check-apoint.git
 ```
 
-install and run:
+Install and run:
 ```
 npm install
 npm start
