@@ -52,13 +52,18 @@ const checkForAppointments = async () => {
          const optionsEl = await driver.findElements(By.css('#Select1>option'));
 
          if(open.length > 0){
-            open.forEach((async openDate => {
+            for(let j = 0; j > open.length; j++){
+               let openDate = open[j];
                const date = await openDate.getText();
                const currURl = await driver.getCurrentUrl();
                const msg = `open appointment found on ${month} ${date}`;
                log(msg);
                bot.sendMessage(`${msg} \nlink: ${currURl}`)
-            }))
+            }
+            open.forEach((async openDate => {
+               log('test if async callback with bind works');
+               const date = await openDate.getText();
+            }).bind(this))
          }
 
          if(i === (monthsToCheck - 1)){
