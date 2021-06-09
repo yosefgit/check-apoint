@@ -1,5 +1,4 @@
 # Check-Apoint
-## A simple bot to check for appointments in the us embassy
 
 __Dependancies__:
 - git
