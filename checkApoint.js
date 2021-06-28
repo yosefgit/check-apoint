@@ -17,6 +17,7 @@ if(alwaysNotify){
 }
 
 const checkForAppointments = async () => {
+   log(new Date().toLocaleString())
    log('checking for available appointments...');
    
    try{
@@ -35,6 +36,7 @@ const checkForAppointments = async () => {
       
       const monthsToCheck = 3;
       let openDays = 0;
+      let messageTabel = {};
 
       // print available appointments for next 3 months
       for(let i = 0; i < monthsToCheck; i++){
@@ -44,8 +46,9 @@ const checkForAppointments = async () => {
          let month = await monthEl.getText();
          
          const message = `${month} ${open.length} available appointments ${booked.length} booked appointments`;
+         messageTabel[month] = {open: open.length, booked: booked.length}
 
-         log(message);
+         // log(message);
          results.push(message)
          openDays += open.length;
          
@@ -81,6 +84,8 @@ const checkForAppointments = async () => {
             }
          }
       }
+
+      console.table(messageTabel);
 
       if(openDays > 0){
          // notify
