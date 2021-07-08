@@ -6,24 +6,23 @@ const Builder = Webdriver.Builder;
 const By = Webdriver.By;
 const log = console.log;
 const url = "https://evisaforms.state.gov/acs/default.asp?postcode=JRS&appcode=1";
-const argsTypes = {
-   alwaysNotify: "--n"
-}
 
-const alwaysNotify = process.argv.some(arg => arg === argsTypes.alwaysNotify);
-
-if(alwaysNotify){
-   log("notify user after every scan - enabled");
-}
+// start headless browser instance
+const driver = new Builder().forBrowser('firefox').setFirefoxOptions(new FireFox.Options().headless()).build();
 
 const checkForAppointments = async () => {
    log(new Date().toLocaleString())
    log('checking for available appointments...');
+
    
-   try{
-      const driver = new Builder().forBrowser('firefox').setFirefoxOptions(new FireFox.Options().headless()).build();
-      const results = []
+   try {
       await driver.get(url);
+   } catch (error) {
+      console.error("couldn't connect to embassy website, skipping check");
+      return;
+   }
+
+   try{
       await driver.findElement(By.css('input')).click();
       const chkbx1 = await driver.findElement(By.css('input[name="chkbox01"]'))
       chkbx1.click();
@@ -45,33 +44,24 @@ const checkForAppointments = async () => {
          let monthEl = await driver.findElement(By.css('#Select1>option:checked'));
          let month = await monthEl.getText();
          
-         const message = `${month} ${open.length} available appointments ${booked.length} booked appointments`;
          messageTabel[month] = {open: open.length, booked: booked.length}
-
-         // log(message);
-         results.push(message)
          openDays += open.length;
-         
-         const optionsEl = await driver.findElements(By.css('#Select1>option'));
 
          if(open.length > 0){
-            for(let j = 0; j > open.length; j++){
-               let openDate = open[j];
-               const date = await openDate.getText();
-               const currURl = await driver.getCurrentUrl();
-               const msg = `open appointment found on ${month} ${date}`;
-               log(msg);
-               bot.sendMessage(`${msg} \nlink: ${currURl}`)
-            }
             open.forEach((async openDate => {
-               log('test if async callback with bind works');
                const date = await openDate.getText();
+               const msg = `open appointment found on ${month} ${date}`;
+
+               log(msg);
+               bot.sendMessage(`${msg}\n${url}`);
             }).bind(this))
          }
 
          if(i === (monthsToCheck - 1)){
             break;
          }
+
+         const optionsEl = await driver.findElements(By.css('#Select1>option'));
 
          // find next month and click on it
          for(let i = 0; i < optionsEl.length; i++){
@@ -90,19 +80,16 @@ const checkForAppointments = async () => {
       if(openDays > 0){
          // notify
          log('open day found')
-         const currUrl = await driver.getCurrentUrl();
-         bot.sendMessage("open appointment found\n" + currUrl)
+         bot.sendMessage("open appointment found\n" + url)
       }
 
       // close session
-      await driver.quit();
-      alwaysNotify && bot.sendMessage(new Date(Date.now()).toLocaleString() + '\n' + results.join('\n'));
+      // await driver.quit();
    } catch (e){
       console.error(e);
-      await driver.quit()
+      // await driver.quit()
    }
 }
 
 checkForAppointments()
-setInterval(checkForAppointments, (10 * 60 * 1000))
-
+setInterval(checkForAppointments, (5 * 60 * 1000))
