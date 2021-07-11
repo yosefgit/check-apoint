@@ -1,24 +1,26 @@
 const Webdriver = require('selenium-webdriver');
 const FireFox = require('selenium-webdriver/firefox');
 const bot = require('./checkapoint-bot');
+const Logger = require('./logger');
 
 const Builder = Webdriver.Builder;
 const By = Webdriver.By;
-const log = console.log;
+const logger = new Logger();
+
 const url = "https://evisaforms.state.gov/acs/default.asp?postcode=JRS&appcode=1";
 
 // start headless browser instance
 const driver = new Builder().forBrowser('firefox').setFirefoxOptions(new FireFox.Options().headless()).build();
 
 const checkForAppointments = async () => {
-   log(new Date().toLocaleString())
-   log('checking for available appointments...');
+   logger.log(new Date().toLocaleString())
+   logger.log('checking for available appointments...');
 
    
    try {
       await driver.get(url);
    } catch (error) {
-      console.error("couldn't connect to embassy website, skipping check");
+      logger.error("couldn't connect to embassy website, skipping check");
       return;
    }
 
@@ -52,7 +54,7 @@ const checkForAppointments = async () => {
                const date = await openDate.getText();
                const msg = `open appointment found on ${month} ${date}`;
 
-               log(msg);
+               logger.log(msg);
                bot.sendMessage(`${msg}\n${url}`);
             }).bind(this))
          }
@@ -75,18 +77,18 @@ const checkForAppointments = async () => {
          }
       }
 
-      console.table(messageTabel);
+      logger.table(messageTabel);
 
       if(openDays > 0){
          // notify
-         log('open day found')
+         logger.log('open day found')
          bot.sendMessage("open appointment found\n" + url)
       }
 
       // close session
       // await driver.quit();
    } catch (e){
-      console.error(e);
+      logger.error(e);
       // await driver.quit()
    }
 }
