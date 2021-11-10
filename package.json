@@ -5,16 +5,20 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node checkApoint.js",
-    "dev": "nodemon ./checkApoint.js"
+    "start": "node ./checkAppoint-pupeteer.js",
+    "dev": "nodemon ./checkAppoint-pupeteer.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/puppeteer": "^5.4.4",
     "express": "^4.17.1",
     "node-telegram-bot-api": "^0.51.0",
     "phantomjs": "^2.1.7",
+    "puppeteer": "^10.4.0",
+    "puppeteer-extra": "^3.2.3",
+    "puppeteer-extra-plugin-stealth": "^2.9.0",
     "selenium-webdriver": "^4.0.0-beta.1",
     "selenium-webdriver-selector": "^1.0.3"
   },
