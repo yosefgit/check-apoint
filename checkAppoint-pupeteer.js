@@ -1,4 +1,3 @@
-// import puppeteer from "puppeteer-extra";
 const puppeteer = require("puppeteer-extra");
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const url = "https://evisaforms.state.gov/acs/default.asp?postcode=JRS&appcode=1";
@@ -7,9 +6,9 @@ const logger = require('./logger');
 const bot = require('./checkapoint-bot');
 
 async function check(){
-    puppeteer.launch({headless: false}).then(async browser => {
+    puppeteer.launch({headless: true}).then(async browser => {
         logger.log(new Date().toLocaleString())
-        logger.log('checking for available appointments...');
+        logger.loadMsg('checking for available appointments');
 
         try {
             const page = await browser.newPage()
@@ -32,7 +31,7 @@ async function check(){
                 const booked = await page.$$('#Table3>tbody>tr>td[bgColor="#ADD9F4"]');
                 let monthEl = await page.$('#Select1>option:checked');
                 const month = await page.evaluate( el => el.textContent, monthEl);
-                console.log('checking for', month)
+                // console.log('checking for', month)
                 messageTabel[month] = {open: open.length, booked: booked.length}
                 openDays += open.length;
 
