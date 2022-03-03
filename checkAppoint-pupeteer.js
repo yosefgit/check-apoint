@@ -55,7 +55,7 @@ async function check(){
                     if(text == month){
                         if(month === "December"){
                             await page.waitForSelector("#Select2");
-                            await page.select("#Select2", "2022"); // hardcoded to select next year.
+                            await page.select("#Select2", (new Date().getUTCFullYear()+1)+""); // next year
                             await page.waitForSelector('#Select1');
                             await page.select("#Select1", "1");
                         } else {
