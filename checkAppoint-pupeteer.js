@@ -6,6 +6,9 @@ const logger = require('./logger');
 const bot = require('./checkapoint-bot');
 
 async function check(){
+    const checkType = process.argv[2] || "CRBA";
+    logger.log("checking for", (checkType.toLowerCase() == "crba" ? "CRBA" : "Passprot Service"))
+
     puppeteer.launch({headless: true}).then(async browser => {
         logger.log(new Date().toLocaleString())
         logger.loadMsg('checking for available appointments');
@@ -17,7 +20,8 @@ async function check(){
             await input.click();
             const chkbx1 = await page.waitForSelector('input[name="chkbox01"]');
             await chkbx1.click();
-            await page.click('input[name="chkservice"][value="AA"]');
+            await page.click(`input[name="chkservice"][value="${checkType.toLowerCase() == "rbac" ? "02B" : "AA"}"]`);
+            // await page.click('input[name="chkservice"][value="02B"]');
             await page.click('input[type="submit"]');
 
             const monthsToCheck = 3;
@@ -81,3 +85,8 @@ async function check(){
 
 check()
 setInterval(check, (5 * 60 * 1000))
+
+process.on("exit", (sig) => {
+    logger.log("terminating after recieving exit code", sig)
+    process.stdout.write("\x1B[?25h") // "\x1B[?25h" to enable curser
+})

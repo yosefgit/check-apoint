@@ -21,9 +21,9 @@ class Logger {
         await this.writeToFile(msg);
     }
 
-    async log(msg){
+    async log(msg, ...args){
         this.endInterval();
-        console.log(msg);
+        console.log(msg, ...args);
         await this.writeToFile(msg);
     }
 
